@@ -22,8 +22,8 @@ app.add_middleware(
 
 Loaded_Content = []
 
-for i in range(1,22):
-    with open('CostAddedData/Final_Data_of_Supplier{}.pkl'.format(i), 'rb') as pickle_file:
+for i in range(1,2):
+    with open('Final_Data_of_Supplier{}.pkl'.format(i), 'rb') as pickle_file:
         content = pickle.load(pickle_file)
         Loaded_Content.extend(content)
 
