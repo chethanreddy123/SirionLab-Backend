@@ -1,5 +1,9 @@
 from fastapi import FastAPI, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+import numpy as np
 import joblib
 import json
 import pickle
@@ -34,6 +38,16 @@ C4 = MongoClient('mongodb+srv://achethanreddy1921:12345@cluster0.pcjvpav.mongodb
 myData4 = C4['test']['test']
 
 List_Of_Clusters = [myData1, myData2, myData3, myData4]
+
+
+OldMax, OldMin, OldRange = (10401986.77325441, -10327433.682112753, 20729420.455367163)
+
+NewMax = 1000
+NewMin = 1
+
+NewRange = NewMax - NewMin
+
+NewValue =  lambda x : (((x - OldMin) * NewRange) / OldRange) + NewMin
 
 
 
@@ -116,6 +130,78 @@ async def getInformation(info : Request):
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
     Results = []
+
+    def get_data(n):
+        for i in List_Of_Clusters[n].find({"SupplierName" : CurrString}):
+            yield(i)
+
+
+    for i in range(4):
+        cuList = get_data(i)
+
+        while True:
+            try:
+                item = next(cuList)
+                del item['_id']
+                Results.append(item)
+
+            except StopIteration:
+                break
+
+    CostList = []
+
+    for i in Results :
+        if i['Cost'] > 1000 or i['Cost'] < 0 :
+            CostList.append((NewValue(i['Cost']) , i['Year']))
+        else:
+            CostList.append((i['Cost'] , i['Year']))
+
+    CostList = sorted(CostList, 
+       key=lambda x: x[1])
+
+    X, y = [] , []
+
+    for i,j in CostList:
+        X.append(int(str(j)[2:]))
+        y.append(i)
+
+
+    Df = pd.DataFrame({"x" : X , "y" : y})
+
+    from sklearn.preprocessing import PolynomialFeatures
+
+    poly = PolynomialFeatures(degree = 5)
+    X_poly = poly.fit_transform(Df[['x']])
+
+    poly.fit(X_poly, Df['y'])
+    lin2 = LinearRegression()
+    lin2.fit(X_poly, Df['y'])
+
+    X = Df[['x']]
+    y = Df['y']
+    x_prec = pd.DataFrame({"x" : [22 + i  for i in range(5)]})[['x']]
+
+    #print(X)
+
+    CurrListx = list(X.x)
+    CurrListy = list(y)
+
+    PrecListx = list(X.x)
+    PrecListy = list(lin2.predict(poly.fit_transform(x_prec)))
+
+
+    PlotData = {
+        "CurrListx" : CurrListx,
+        "CurrListy" : CurrListy,
+        "PrecListx" : PrecListx,
+        "PrecListy" : PrecListy
+    }
+
+    return PlotData
+
+
+
+
 
 
 
