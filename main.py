@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.encoders import jsonable_encoder
 import joblib
 import json
 import pickle
@@ -19,13 +18,22 @@ app.add_middleware(
 )
 
 
+from pymongo.mongo_client import MongoClient
+import pickle
 
-Loaded_Content = []
+C1 = MongoClient('mongodb+srv://chethanreddy2002:12345@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority')
+myData1 = C1['Test']['Test']
 
-for i in range(1,2):
-    with open('Final_Data_of_Supplier{}.pkl'.format(i), 'rb') as pickle_file:
-        content = pickle.load(pickle_file)
-        Loaded_Content.extend(content)
+C2 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.6ouanj6.mongodb.net/?retryWrites=true&w=majority')
+myData2 = C2['Test']['Test']
+
+C3 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.uou14qn.mongodb.net/?retryWrites=true&w=majority')
+myData3 = C3['Test']['Test']
+
+C4 = MongoClient('mongodb+srv://achethanreddy1921:12345@cluster0.pcjvpav.mongodb.net/?retryWrites=true&w=majority')
+myData4 = C4['test']['test']
+
+List_Of_Clusters = [myData1, myData2, myData3, myData4]
 
 
 
@@ -36,13 +44,30 @@ async def getInformation(info : Request):
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
     Results = []
-    # print(Loaded_Content[0])
+    def get_data(n):
+        for i in List_Of_Clusters[n].find({"Function" : CurrString}):
+            yield(i)
 
-    for i in Loaded_Content:
-        if len(Results) == 3:
+
+
+    for i in range(4):
+        if len(Results) >= 3:
             break
-        if i['Function'] == CurrString:
-            Results.append(i)
+        cuList = get_data(i)
+        while True:
+            try:
+ 
+            # Iterate by calling next
+                item = next(cuList)
+                del item['_id']
+                Results.append(item)
+                if len(Results) == 3:
+                    break
+            except StopIteration:
+ 
+                # exception will happen when iteration will over
+                break
+
 
     Final_Data = {"List" : Results}
     return Final_Data
@@ -55,10 +80,33 @@ async def getInformation(info : Request):
     CurrString = dict(req_info)["SearchedString"]
     Results = []
 
-    for i in Loaded_Content:
-        if i['SupplierName'] == CurrString:
-            Results.append(i)
+    print(List_Of_Clusters[0].find({"SupplierName" : CurrString}))
+
+    def get_data(n):
+        for i in List_Of_Clusters[n].find({"SupplierName" : CurrString}):
+            yield(i)
+
+
+    check = False
+
+    for i in range(4):
+
+        cuList = get_data(i)
+        if check == True:
             break
+        while True:
+            try:
+
+                item = next(cuList)
+                del item['_id']
+                Results.append(item)
+                check = True
+                break
+                
+            except StopIteration:
+ 
+                # exception will happen when iteration will over
+                break
 
     return Results[0]
 
