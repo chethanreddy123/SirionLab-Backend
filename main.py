@@ -23,7 +23,7 @@ app.add_middleware(
 Loaded_Content = []
 
 for i in range(1,22):
-    with open('Final_Data_of_Supplier{}.pkl'.format(i), 'rb') as pickle_file:
+    with open('CostAddedData/Final_Data_of_Supplier{}.pkl'.format(i), 'rb') as pickle_file:
         content = pickle.load(pickle_file)
         Loaded_Content.extend(content)
 
@@ -32,50 +32,42 @@ for i in range(1,22):
 
 @app.post("/domainSearch")
 async def getInformation(info : Request):
-    print(await info.body())
+    # print(await info.body())
     req_info = await info.json()
     CurrString = dict(req_info)["SearchedString"]
     Results = []
+    # print(Loaded_Content[0])
 
-    f = open('Search-Data.json')
+    for i in Loaded_Content:
+        if len(Results) == 3:
+            break
+        if i['Function'] == CurrString:
+            Results.append(i)
 
-    data = json.load(f)
-
-
-    return jsonable_encoder(data)
+    Final_Data = {"List" : Results}
+    return Final_Data
 
 
 @app.post("/companySearch")
 async def getInformation(info : Request):
     print(await info.body())
     req_info = await info.json()
+    CurrString = dict(req_info)["SearchedString"]
+    Results = []
 
-    d = {
-        "SupplierName": "Infosy",
-         
-        "Region": "APAC",
-         
-        "Country": "India",
-         
-        "Function": "IT & Infrastructure",
-         
-        "Service": "Applications Development",
-         
-        "AvgCost": "100k",
-         
-        "Rating": "90",
-         
-        "AverageDeliveryTime": "90",
-         
-        "NumberofEscalations": "5",
-         
-        "Year": "2018",
-         
-        "Resources": "10000"
-         
-        }
+    for i in Loaded_Content:
+        if i['SupplierName'] == CurrString:
+            Results.append(i)
+            break
 
-    return d
+    return Results[0]
+
+@app.post("/predictionSearch")
+async def getInformation(info : Request):
+    print(await info.body())
+    req_info = await info.json()
+    CurrString = dict(req_info)["SearchedString"]
+    Results = []
 
 
 
