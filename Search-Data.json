@@ -1,0 +1,79 @@
+{
+    "List": [
+        {
+
+            "SupplierName": "Infosys",
+         
+            "Region": "APAC",
+         
+            "Country": "India",
+         
+            "Function": "IT & Infrastructure",
+         
+            "Service": "Applications Development",
+         
+            "AvgCost": "100k",
+         
+            "Rating": "90",
+         
+            "AverageDeliveryTime": "90",
+         
+            "NumberofEscalations": "5",
+         
+            "Year": "2018",
+         
+            "Resources": "10000"
+         
+        },
+        {
+
+            "SupplierName": "Infosys",
+         
+            "Region": "APAC",
+         
+            "Country": "India",
+         
+            "Function": "IT & Infrastructure",
+         
+            "Service": "Applications Development",
+         
+            "AvgCost": "100k",
+         
+            "Rating": "90",
+         
+            "AverageDeliveryTime": "90",
+         
+            "NumberofEscalations": "5",
+         
+            "Year": "2018",
+         
+            "Resources": "10000"
+         
+        },
+        {
+
+            "SupplierName": "Infosys",
+         
+            "Region": "APAC",
+         
+            "Country": "India",
+         
+            "Function": "IT & Infrastructure",
+         
+            "Service": "Applications Development",
+         
+            "AvgCost": "100k",
+         
+            "Rating": "90",
+         
+            "AverageDeliveryTime": "90",
+         
+            "NumberofEscalations": "5",
+         
+            "Year": "2018",
+         
+            "Resources": "10000"
+         
+        }   
+    ]
+}
