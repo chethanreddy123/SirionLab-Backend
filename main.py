@@ -121,7 +121,7 @@ async def getInformation(info : Request):
  
                 # exception will happen when iteration will over
                 break
-
+    
     return Results[0]
 
 @app.post("/predictionSearch")
@@ -180,24 +180,53 @@ async def getInformation(info : Request):
     X = Df[['x']]
     y = Df['y']
     x_prec = pd.DataFrame({"x" : [22 + i  for i in range(5)]})[['x']]
+    print(list(x_prec.x))
 
     #print(X)
 
     CurrListx = list(X.x)
     CurrListy = list(y)
 
-    PrecListx = list(X.x)
+    PrecListx = list(x_prec.x)
     PrecListy = list(lin2.predict(poly.fit_transform(x_prec)))
+
+    PrecListy = [round(i,2) for i in PrecListy]
+    CurrListy = [round(i,2) for i in CurrListy]
+
+    FinalX = CurrListx + PrecListx
+    FinalY = CurrListy + PrecListy
+
+    FinalX = [int("20"+str(i)) for i in FinalX]
 
 
     PlotData = {
-        "CurrListx" : CurrListx,
-        "CurrListy" : CurrListy,
-        "PrecListx" : PrecListx,
-        "PrecListy" : PrecListy
+        "Years" : FinalX,
+        "Performance" : CurrListy + PrecListy,
     }
 
     return PlotData
+
+@app.post("/numberSearch")
+async def getInformation(info : Request):
+    print(await info.body())
+    req_info = await info.json()
+    CurrString = int(dict(req_info)["No_of_Companies"])
+    Results = []
+
+    query = list(List_Of_Clusters[0].find({}).limit(CurrString))
+    for i in query:
+        del i['_id']
+    print(list(query))
+    finalDict = {
+        "List_of_Companies" : query
+    }
+
+    return finalDict
+        
+
+
+
+
 
 
 
