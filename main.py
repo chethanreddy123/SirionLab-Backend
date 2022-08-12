@@ -196,12 +196,29 @@ async def getInformation(info : Request):
     FinalX = CurrListx + PrecListx
     FinalY = CurrListy + PrecListy
 
+    oldMax = max(FinalY)
+    oldMin = min(FinalY)
+
+    oldRange = oldMax - oldMin
+
+    NewMax = 100
+    NewMin = 1
+
+    NewRange = NewMax - NewMin
+
+    changer = lambda OldValue :(((OldValue - oldMin) * NewRange) / oldRange) + NewMin
+
+    FinalY = CurrListy + PrecListy
+
+    FinalY = [round(changer(i),2) for i in FinalY]
+
+
     FinalX = [int("20"+str(i)) for i in FinalX]
 
 
     PlotData = {
         "Years" : FinalX,
-        "Performance" : CurrListy + PrecListy,
+        "Performance" : FinalY,
     }
 
     return PlotData
