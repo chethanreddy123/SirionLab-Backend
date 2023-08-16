@@ -25,19 +25,11 @@ app.add_middleware(
 from pymongo.mongo_client import MongoClient
 import pickle
 
-C1 = MongoClient('mongodb+srv://chethanreddy2002:12345@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority')
+C1 = MongoClient('mongodb+srv://chethanreddy2002:1234@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority')
 myData1 = C1['Test']['Test']
 
-C2 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.6ouanj6.mongodb.net/?retryWrites=true&w=majority')
-myData2 = C2['Test']['Test']
 
-C3 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.uou14qn.mongodb.net/?retryWrites=true&w=majority')
-myData3 = C3['Test']['Test']
-
-C4 = MongoClient('mongodb+srv://achethanreddy1921:12345@cluster0.pcjvpav.mongodb.net/?retryWrites=true&w=majority')
-myData4 = C4['test']['test']
-
-List_Of_Clusters = [myData1, myData2, myData3, myData4]
+List_Of_Clusters = [myData1]
 
 
 OldMax, OldMin, OldRange = (10401986.77325441, -10327433.682112753, 20729420.455367163)
@@ -64,7 +56,7 @@ async def getInformation(info : Request):
 
 
 
-    for i in range(4):
+    for i in range(1):
         if len(Results) >= 3:
             break
         cuList = get_data(i)
@@ -103,7 +95,7 @@ async def getInformation(info : Request):
 
     check = False
 
-    for i in range(4):
+    for i in range(1):
 
         cuList = get_data(i)
         if check == True:
@@ -136,7 +128,7 @@ async def getInformation(info : Request):
             yield(i)
 
 
-    for i in range(4):
+    for i in range(1):
         cuList = get_data(i)
 
         while True:
@@ -179,7 +171,7 @@ async def getInformation(info : Request):
 
     X = Df[['x']]
     y = Df['y']
-    x_prec = pd.DataFrame({"x" : [22 + i  for i in range(5)]})[['x']]
+    x_prec = pd.DataFrame({"x" : [23 + i  for i in range(2)]})[['x']]
     print(list(x_prec.x))
 
     #print(X)
