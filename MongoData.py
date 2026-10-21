@@ -1,7 +1,8 @@
+import os
 from pymongo.mongo_client import MongoClient
 import pickle
 
-client = MongoClient("mongodb+srv://chethanreddy2002:12345@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient(os.environ["MONGODB_URI_2"])
 Data = client['Test']
 MyData = Data['Test']
 

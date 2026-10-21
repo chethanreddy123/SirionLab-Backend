@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sklearn.preprocessing import PolynomialFeatures
@@ -25,7 +26,7 @@ app.add_middleware(
 from pymongo.mongo_client import MongoClient
 import pickle
 
-C1 = MongoClient('mongodb+srv://chethanreddy2002:1234@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority')
+C1 = MongoClient(os.environ["MONGODB_URI"])
 myData1 = C1['Test']['Test']
 
 

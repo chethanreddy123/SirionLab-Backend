@@ -1,16 +1,17 @@
+import os
 from pymongo.mongo_client import MongoClient
 import pickle
 
-C1 = MongoClient('mongodb+srv://chethanreddy2002:12345@cluster0.xihwp.mongodb.net/?retryWrites=true&w=majority')
+C1 = MongoClient(os.environ["MONGODB_URI_2"])
 myData1 = C1['Test']['Test']
 
-C2 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.6ouanj6.mongodb.net/?retryWrites=true&w=majority')
+C2 = MongoClient(os.environ["MONGODB_URI_3"])
 myData2 = C2['Test']['Test']
 
-C3 = MongoClient('mongodb+srv://chethan1234:12345@cluster0.uou14qn.mongodb.net/?retryWrites=true&w=majority')
+C3 = MongoClient(os.environ["MONGODB_URI_4"])
 myData3 = C3['Test']['Test']
 
-C4 = MongoClient('mongodb+srv://achethanreddy1921:12345@cluster0.pcjvpav.mongodb.net/?retryWrites=true&w=majority')
+C4 = MongoClient(os.environ["MONGODB_URI_5"])
 myData4 = C4['test']['test']
 
 List_Of_Clusters = [C1, C2, C3, C4]
